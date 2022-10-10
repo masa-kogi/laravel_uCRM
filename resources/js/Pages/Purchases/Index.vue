@@ -61,10 +61,10 @@ onMounted(() => {
                             {{ order.id }}
                           </Link>
                         </td>
-                        <td class="px-4 py-3">{{ order.customer_name }}</td>
-                        <td class="px-4 py-3">{{ order.total }}</td>
-                        <td class="px-4 py-3">{{ order.status }}</td>
-                        <td class="px-4 py-3">{{ dayjs(order.created_at).format('YYYY-MM-DD HH:mm:ss') }}</td>
+                        <td class="border-b-2 border-gray-200 px-4 py-3">{{ order.customer_name }}</td>
+                        <td class="border-b-2 border-gray-200 px-4 py-3">{{ order.total }}</td>
+                        <td class="border-b-2 border-gray-200 px-4 py-3">{{ order.status }}</td>
+                        <td class="border-b-2 border-gray-200 px-4 py-3">{{ dayjs(order.created_at).format('YYYY-MM-DD HH:mm:ss') }}</td>
                       </tr>
                     </tbody>
                   </table>

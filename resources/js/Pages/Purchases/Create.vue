@@ -111,10 +111,10 @@ const setCustomerId = id => {
                           </thead>
                           <tbody>
                             <tr v-for="item in itemList" :key="item.id">
-                              <td class="px-4 py-3">{{ item.id }}</td>
-                              <td class="px-4 py-3">{{ item.name }}</td>
-                              <td class="px-4 py-3">{{ item.price }}</td>
-                              <td class="px-4 py-3">
+                              <td class="border-b-2 border-gray-200 px-4 py-3">{{ item.id }}</td>
+                              <td class="border-b-2 border-gray-200 px-4 py-3">{{ item.name }}</td>
+                              <td class="border-b-2 border-gray-200 px-4 py-3">{{ item.price }}</td>
+                              <td class="border-b-2 border-gray-200 px-4 py-3">
                                 <select name="quantity" v-model="item.quantity">
                                   <option v-for="q in quantity" :value="q">{{ q }}</option>
                                 </select>

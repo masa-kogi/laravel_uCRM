@@ -40,21 +40,18 @@ defineProps({
                         <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">商品名</th>
                         <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">価格</th>
                         <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">ステータス</th>
-                        <th
-                          class="w-10 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br">
-                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="item in items" :key="item.id">
-                        <td class="px-4 py-3">
+                        <td class="border-b-2 border-gray-200 px-4 py-3">
                           <Link class="text-blue-400" :href="route('items.show', {item: item.id})">
                             {{ item.id }}
                           </Link>
                         </td>
-                        <td class="px-4 py-3">{{ item.name }}</td>
-                        <td class="px-4 py-3">{{ item.price }}</td>
-                        <td class="px-4 py-3">
+                        <td class="border-b-2 border-gray-200 px-4 py-3">{{ item.name }}</td>
+                        <td class="border-b-2 border-gray-200 px-4 py-3">{{ item.price }}</td>
+                        <td class="border-b-2 border-gray-200 px-4 py-3">
                           <span v-if="item.is_selling === 1">販売中</span>
                           <span v-if="item.is_selling === 0">停止中</span>
                         </td>
