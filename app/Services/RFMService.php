@@ -1,23 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Services;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Inertia\Inertia;
-use App\Models\Order;
+use Illuminate\Support\Facades\Log;
 
-class AnalysisController extends Controller
+class RFMService
 {
-    public function index()
+    public static function rfm($subQuery, $rfmPrms)
     {
-        $startDate = '2022-08-20';
-        $endDate = '2022-08-21';
-
         // RMF分析
         // 1. 購買ID毎にまとめる
-        $subQuery = Order::betweenDate($startDate, $endDate)
-            ->groupBy('id')
+        $subQuery = $subQuery->groupBy('id')
             ->selectRaw('
                 id,
                 customer_id,
@@ -38,10 +32,6 @@ class AnalysisController extends Controller
             sum(totalPerPurchase) as monetary');
 
         // 4. 会員毎のRFMランクを計算
-        $rfmPrms = [
-            14, 28, 60, 90, 7, 5, 3, 2, 300000, 200000, 100000, 30000
-        ];
-
         $subQuery = DB::table($subQuery)
             ->selectRaw('
             customer_id,
@@ -69,7 +59,7 @@ class AnalysisController extends Controller
                 when ? <= monetary then 2
             else 1 end as m', $rfmPrms);
 
-        // Log::debug($subQuery->get());
+        Log::debug($subQuery->get());
 
         // 5.ランク毎の数を計算する
         $totals = DB::table($subQuery)->count();
@@ -80,8 +70,8 @@ class AnalysisController extends Controller
             ->selectRaw('rank as r, count(r)')
             ->orderBy('r', 'desc')
             ->pluck('count(r)');
-        // dd($rCount->get());
-        // Log::debug($rCount);
+
+        Log::debug($rCount);
 
 
         $fCount = DB::table($subQuery)
@@ -110,8 +100,6 @@ class AnalysisController extends Controller
             $rank--; // rankを1ずつ減らす
         }
 
-        // dd($totals, $eachCount, $rCount, $fCount, $mCount);
-
 
         // 6. RとFで2次元で表示してみる
         $data = DB::table($subQuery)
@@ -127,8 +115,6 @@ class AnalysisController extends Controller
             ->orderBy('rRank', 'desc')
             ->get();
 
-        // dd($data);
-
-        return Inertia::render('Analysis');
+        return [$data, $totals, $eachCount];
     }
 }
