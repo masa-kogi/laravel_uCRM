@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ItemSeeder::class,
             RankSeeder::class,
+            BranchSeeder::class,
         ]);
 
         \App\Models\Customer::factory(1000)->create();

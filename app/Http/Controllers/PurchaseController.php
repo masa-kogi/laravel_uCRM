@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatePurchaseRequest;
 use App\Models\Purchase;
 use App\Models\Customer;
 use App\Models\Item;
+use App\Models\Branch;
 use App\Models\Order;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
@@ -26,6 +27,7 @@ class PurchaseController extends Controller
             ->selectRaw('
                 id,
                 sum(subtotal) as total,
+                branch_name,
                 customer_name,
                 status,
                 created_at
@@ -49,10 +51,11 @@ class PurchaseController extends Controller
         $items = Item::select('id', 'name', 'price')
             ->where('is_selling', true)
             ->get();
+        $branches = Branch::select('id', 'name')->get();
 
         return Inertia::render('Purchases/Create', [
-            // 'customers' => $customers,
-            'items' => $items
+            'items' => $items,
+            'branches' => $branches
         ]);
     }
 
@@ -64,13 +67,14 @@ class PurchaseController extends Controller
      */
     public function store(StorePurchaseRequest $request)
     {
-        // dd($request);
+        dd($request);
 
         DB::beginTransaction();
 
         try {
             $purchase = Purchase::create([
                 'customer_id' => $request->customer_id,
+                'branch_id' => $request->branch_id,
                 'status' => $request->status
             ]);
 
@@ -130,10 +134,10 @@ class PurchaseController extends Controller
 
         $items = [];
 
-        foreach($allItems as $allItem) {
+        foreach ($allItems as $allItem) {
             $quantity = 0;
-            foreach($purchase->items as $item) {
-                if($allItem->id === $item->id) {
+            foreach ($purchase->items as $item) {
+                if ($allItem->id === $item->id) {
                     $quantity = $item->pivot->quantity;
                 }
             }
@@ -179,7 +183,7 @@ class PurchaseController extends Controller
 
             $items = [];
 
-            foreach($request->items as $item) {
+            foreach ($request->items as $item) {
                 $items = $items + [
                     $item['id'] => [
                         'quantity' => $item['quantity']
@@ -189,7 +193,7 @@ class PurchaseController extends Controller
 
             // dd($items);
             $purchase->items()->sync($items);
-                DB::commit();
+            DB::commit();
 
             return to_route('dashboard');
         } catch (\Exception $e) {

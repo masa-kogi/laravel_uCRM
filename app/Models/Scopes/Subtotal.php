@@ -21,6 +21,8 @@ class Subtotal implements Scope
             items.id as item_id,
             item_purchase.id as pivot_id,
             items.price * item_purchase.quantity as subtotal,
+            branches.id as branch_id,
+            branches.name as branch_name,
             customers.id as customer_id,
             customers.name as customer_name,
             items.name as item_name,
@@ -32,7 +34,8 @@ class Subtotal implements Scope
             from purchases
             left join item_purchase on purchases.id = item_purchase.purchase_id
             left join items on item_purchase.item_id = items.id
-            left join customers on purchases.customer_id = customers.id';
+            left join customers on purchases.customer_id = customers.id
+            left join branches on purchases.branch_id = branches.id';
 
         $builder->fromSub($sql, 'order_subtotals');
     }

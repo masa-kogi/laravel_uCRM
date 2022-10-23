@@ -37,4 +37,13 @@ class Order extends Model
                 ->where('created_at', "<=", $endDate1);
         }
     }
+
+    public function scopeSelectBranch($query, $branchId = null)
+    {
+        if ($branchId) {
+            return $query->where('branch_id', $branchId);
+        } else {
+            return;
+        }
+    }
 }

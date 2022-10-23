@@ -15,7 +15,8 @@ class AnalysisController extends Controller
 {
     public function index(Request $request)
     {
-        $subQuery = Order::betweenDate($request->startDate, $request->endDate);
+        $subQuery = Order::betweenDate($request->startDate, $request->endDate)
+            ->selectBranch($request->branch);
 
         if ($request->type === 'perDay') {
             list($data, $labels, $totals) = AnalysisService::perDay($subQuery);

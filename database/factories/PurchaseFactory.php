@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Customer;
+use App\Models\Branch;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Purchase>
@@ -22,6 +23,7 @@ class PurchaseFactory extends Factory
 
         return [
             'customer_id' => rand(1, Customer::count()),
+            'branch_id' => rand(1, Branch::count()),
             'status' => $this->faker->boolean,
             'created_at' => $created_at
         ];

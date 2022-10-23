@@ -9,7 +9,8 @@ import MicroModal from '@/Components/MicroModal.vue';
 
 
 const props = defineProps({
-  'items': Array
+  'items': Array,
+  'branches': Array
 })
 
 onMounted(() => {
@@ -27,6 +28,7 @@ onMounted(() => {
 const itemList = ref([])
 const form = reactive({
   date: null,
+  branch_id: null,
   customer_id: null,
   status: true,
   items: []
@@ -86,6 +88,15 @@ const setCustomerId = id => {
                           <label for="date" class="leading-7 text-sm text-gray-600">日付</label>
                           <input type="date" id="date" name="date" v-model="form.date"
                             class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                        </div>
+                      </div>
+                      <div class="p-2 w-full">
+                        <div class="relative">
+                          <label for="date" class="leading-7 text-sm text-gray-600">支店名</label>
+                          <select id="branch" name="branch" v-model="form.branch_id"
+                            class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                            <option v-for="branch in branches" :value="branch.id">{{ branch.name }}</option>
+                          </select>
                         </div>
                       </div>
                       <div class="p-2 w-full">

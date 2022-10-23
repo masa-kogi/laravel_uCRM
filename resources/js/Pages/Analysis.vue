@@ -13,6 +13,7 @@ onMounted(() => {
 })
 
 const form = reactive({
+    branch: null,
     startDate: null,
     endDate: null,
     type: 'perDay',
@@ -28,6 +29,7 @@ const getData = async () => {
     try {
         await axios.get('/api/analysis', {
             params: {
+                branch: form.branch,
                 startDate: form.startDate,
                 endDate: form.endDate,
                 type: form.type,
@@ -50,6 +52,8 @@ const getData = async () => {
         console.log(e.message)
     }
 }
+const branches = ["選択しない", "北海道支店", "東北支店", "東関東支店", "北関東支店", "東京支店", "南関東支店", "中部支店", "関西支店", "中国支店", "四国支店", "九州支店"]
+
 </script>
 
 <template>
@@ -67,15 +71,24 @@ const getData = async () => {
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
                         <form @submit.prevent="getData">
-                            分析方法<br>
-                            <input type="radio" v-model="form.type" value="perDay" checked><span class="mr-2">日別</span>
-                            <input type="radio" v-model="form.type" value="perMonth"><span class="mr-2">月別</span>
-                            <input type="radio" v-model="form.type" value="perYear"><span class="mr-2">年別</span>
-                            <input type="radio" v-model="form.type" value="decile"><span class="mr-2">デシル分析</span>
-                            <input type="radio" v-model="form.type" value="rfm"><span class="mr-2">RFM分析</span>
-                            <br>
-                            From: <input type="date" name="startDate" v-model="form.startDate">
-                            To: <input type="date" name="endDate" v-model="form.endDate">
+                            <div class="relative">
+                                支店名<br>
+                                <select id="branch" name="branch" v-model="form.branch"
+                                    class="w-1/4 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                                    <option v-for="(branch, index) in branches" :value=index>{{ branch }}</option>
+                                </select>
+                            </div>
+                            <div class="mt-3">
+                                分析方法<br>
+                                <input type="radio" v-model="form.type" value="perDay" checked><span class="mr-2">日別</span>
+                                <input type="radio" v-model="form.type" value="perMonth"><span class="mr-2">月別</span>
+                                <input type="radio" v-model="form.type" value="perYear"><span class="mr-2">年別</span>
+                                <input type="radio" v-model="form.type" value="decile"><span class="mr-2">デシル分析</span>
+                                <input type="radio" v-model="form.type" value="rfm"><span class="mr-2">RFM分析</span>
+                                <br>
+                                From: <input type="date" name="startDate" v-model="form.startDate">
+                                To: <input type="date" name="endDate" v-model="form.endDate">
+                            </div>
 
                             <div v-if="form.type === 'rfm'" class="my-8">
                                 <!-- 配列の順番がRの5 -> 4 -> 3 -> 2 次が Fの5 -> 4 -> 3 -> 2 の順になるので注意 -->
