@@ -13,15 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('items', function (Blueprint $table) {
+        Schema::create('primary_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('secondary_category_id')
-            ->constrained();
-            $table->string('item_code');
-            $table->string('memo')->nullable();
-            $table->integer('price');
-            $table->boolean('is_selling')->default(true);
+            $table->timestamps();
+        });
+
+        Schema::create('secondary_categories', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->foreignId('primary_category_id')
+                ->constrained();
             $table->timestamps();
         });
     }
@@ -33,6 +35,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('items');
+        Schema::dropIfExists('secondary_categories');
+        Schema::dropIfExists('primary_categories');
     }
 };

@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
+            CategorySeeder::class,
             ItemSeeder::class,
             RankSeeder::class,
             BranchSeeder::class,
@@ -30,7 +31,7 @@ class DatabaseSeeder extends Seeder
             ->create()
             ->each(function (Purchase $purchase) use ($items) {
                 $purchase->items()->attach(
-                    $items->random(rand(1, 3))->pluck('id')->toArray(),
+                    $items->random(rand(1, 12))->pluck('id')->toArray(),
                     ['quantity' => rand(1, 5)]
                 );
             });

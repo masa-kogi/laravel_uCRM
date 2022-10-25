@@ -38,6 +38,7 @@ defineProps({
                           class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">
                           Id</th>
                         <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">商品名</th>
+                        <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">商品コード</th>
                         <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">価格</th>
                         <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">ステータス</th>
                       </tr>
@@ -50,6 +51,7 @@ defineProps({
                           </Link>
                         </td>
                         <td class="border-b-2 border-gray-200 px-4 py-3">{{ item.name }}</td>
+                        <td class="border-b-2 border-gray-200 px-4 py-3">{{ item.item_code }}</td>
                         <td class="border-b-2 border-gray-200 px-4 py-3">{{ item.price }}</td>
                         <td class="border-b-2 border-gray-200 px-4 py-3">
                           <span v-if="item.is_selling === 1">販売中</span>

@@ -46,4 +46,13 @@ class Order extends Model
             return;
         }
     }
+
+    public function scopeSelectCategory($query, $categoryId = null)
+    {
+        if ($categoryId) {
+            return $query->where('category_id', $categoryId);
+        } else {
+            return;
+        }
+    }
 }

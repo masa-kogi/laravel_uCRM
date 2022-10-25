@@ -7,6 +7,12 @@ import axios from 'axios';
 import Chart from '@/Components/Chart.vue';
 import ResultTable from '@/Components/ResultTable.vue';
 
+
+defineProps({
+    branches: Object,
+    categories: Object
+});
+
 onMounted(() => {
     form.startDate = getToday();
     form.endDate = getToday();
@@ -14,6 +20,7 @@ onMounted(() => {
 
 const form = reactive({
     branch: null,
+    category: null,
     startDate: null,
     endDate: null,
     type: 'perDay',
@@ -30,6 +37,7 @@ const getData = async () => {
         await axios.get('/api/analysis', {
             params: {
                 branch: form.branch,
+                category: form.category,
                 startDate: form.startDate,
                 endDate: form.endDate,
                 type: form.type,
@@ -52,7 +60,7 @@ const getData = async () => {
         console.log(e.message)
     }
 }
-const branches = ["選択しない", "北海道支店", "東北支店", "東関東支店", "北関東支店", "東京支店", "南関東支店", "中部支店", "関西支店", "中国支店", "四国支店", "九州支店"]
+// const branches = ["選択しない", "北海道支店", "東北支店", "東関東支店", "北関東支店", "東京支店", "南関東支店", "中部支店", "関西支店", "中国支店", "四国支店", "九州支店"]
 
 </script>
 
@@ -75,7 +83,17 @@ const branches = ["選択しない", "北海道支店", "東北支店", "東関�
                                 支店名<br>
                                 <select id="branch" name="branch" v-model="form.branch"
                                     class="w-1/4 bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                                    <option v-for="(branch, index) in branches" :value=index>{{ branch }}</option>
+                                    <option :value=0>選択しない</option>
+                                    <option v-for="branch in branches" :value=branch.id>{{ branch.name }}</option>
+                                </select>
+                            </div>
+                            <div class="mt-3">
+                                カテゴリー<br>
+                                <select name="category" class="mb-2 lg:mb-0 lg:mr-2" id="" v-model="form.category">
+                                    <option :value=0>全て</option>
+                                    <optgroup v-for="category in categories" :label="category.name">
+                                        <option v-for="secondary in category.secondaries" :value=secondary.id>{{ secondary.name }}</option>
+                                    </optgroup>
                                 </select>
                             </div>
                             <div class="mt-3">
